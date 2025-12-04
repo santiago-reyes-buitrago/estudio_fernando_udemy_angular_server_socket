@@ -14,18 +14,33 @@ export class Socket {
     }
 
     private constructor(server: http.Server) {
-
-        this.io = new socket.Server(server);
+        this.io = new socket.Server(server,{
+            cors: {origin: true, credentials: true}
+        });
+        this.connectedSockets();
     }
 
-    private listenSockets(event: string, callback: (...args: any[]) => void) {
-        console.log('Escuchando evento', event);
-        this.io.on(event, callback);
+    private listenSockets( event: string, callback: (...args: any[]) => void,io:socket.Server = this.io) {
+        console.log('Escuchando evento tipo', event);
+        io.on(event, callback)
     }
 
     private connectedSockets() {
         this.listenSockets('connection', cliente => {
             console.log('Cliente conectado');
+            this.disconnectedSockets(cliente)
+            this.listenMessages(cliente)
         })
+    }
+
+    private disconnectedSockets(client:any) {
+        this.listenSockets('disconnect', () => {
+            console.log('Cliente desconectado');
+        },client)
+    }
+    private listenMessages(client:any) {
+        this.listenSockets('message', (payload:any) => {
+            console.log('Mensaje recibido', payload);
+        },client)
     }
 }

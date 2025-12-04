@@ -15,8 +15,8 @@ export class Server {
     private constructor(port: number = 3000) {
         this.app = express();
         this.port = port;
-        this.httpServer = new http.Server(this.app);
         this.initConfig();
+        this.httpServer = new http.Server(this.app);
     }
 
     static getInstance(port: number) {
