@@ -1,13 +1,12 @@
 import {Server} from "./Server/server.js";
 import {ROUTES_SERVER} from "./Server/constants/routesServer.constant.js";
+import {Socket} from "./sockets/socket.js";
+
 
 const PORT = Number(process.env.PORT) || 3000;
 
-const server =  new Server(PORT);
-// server.addConfiguration(cors({
-//     origin: true,
-//     credentials: true
-// }))
+const server = Server.getInstance(PORT);
+Socket.getInstance(server.getServer())
 
 ROUTES_SERVER.forEach(route => server.addRoute(route));
 
