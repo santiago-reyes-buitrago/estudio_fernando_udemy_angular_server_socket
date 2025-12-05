@@ -25,6 +25,11 @@ export class Socket {
         io.on(event, callback)
     }
 
+    private emitSockets(event: string, payload: any,io:socket.Server = this.io) {
+        console.log('Emitiendo evento tipo', event);
+        io.emit(event, payload)
+    }
+
     private connectedSockets() {
         this.listenSockets('connection', cliente => {
             console.log('Cliente conectado');
@@ -41,6 +46,7 @@ export class Socket {
     private listenMessages(client:any) {
         this.listenSockets('message', (payload:any) => {
             console.log('Mensaje recibido', payload);
+            this.emitSockets('message-new',payload);
         },client)
     }
 }
