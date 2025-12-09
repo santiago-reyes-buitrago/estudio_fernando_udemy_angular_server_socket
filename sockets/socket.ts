@@ -35,6 +35,7 @@ export class Socket {
             console.log('Cliente conectado');
             this.disconnectedSockets(cliente)
             this.listenMessages(cliente)
+            this.listenLogin(cliente)
         })
     }
 
@@ -43,10 +44,18 @@ export class Socket {
             console.log('Cliente desconectado');
         },client)
     }
+
     private listenMessages(client:any) {
         this.listenSockets('message', (payload:any) => {
             console.log('Mensaje recibido', payload);
             this.emitSockets('message-new',payload);
+        },client)
+    }
+
+    private listenLogin(client:any) {
+        this.listenSockets('login', (payload:any) => {
+            console.log('Login recibido', payload);
+            client.emit('login',payload);
         },client)
     }
 }
