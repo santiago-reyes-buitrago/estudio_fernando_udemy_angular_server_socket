@@ -1,4 +1,5 @@
 import {Router} from "express";
+import {Socket} from "../sockets/socket.js";
 
 export const messageRouter = Router();
 
@@ -19,7 +20,10 @@ messageRouter.post('/message', (req, res) => {
 })
 
 messageRouter.post('/message/:id', (req, res) => {
-    console.log(req.params);
+    const {id} = req.params;
+    const {from,msg} = req.body;
+    const socket = Socket.getInstance();
+    socket.Io.in(id).emit('private-message', {from,msg});
     res.json({
         ok: true,
         message: 'POST - Hola desde el servidor',

@@ -19,7 +19,7 @@ export class Server {
         this.httpServer = new http.Server(this.app);
     }
 
-    static getInstance(port: number) {
+    static getInstance(port?: number) {
         if (!Server.instance) {
             Server.instance = new this(port);
         }

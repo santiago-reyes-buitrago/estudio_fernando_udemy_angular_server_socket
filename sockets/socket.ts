@@ -10,9 +10,9 @@ export class Socket {
     private static instance: Socket;
     private io: socket.Server;
 
-    static getInstance(io: http.Server) {
+    static getInstance(io?: http.Server) {
         if (!Socket.instance) {
-            Socket.instance = new Socket(io)
+            Socket.instance = new Socket(io!)
         }
         return Socket.instance;
     }
@@ -71,6 +71,10 @@ export class Socket {
 
     private deleteClient(client: any) {
         usersList.deleteUser(client.id);
+    }
+
+    get Io() {
+        return this.io;
     }
 
 }
